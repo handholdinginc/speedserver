@@ -1,11 +1,14 @@
 unit speed;
 
 {$MODE Delphi}
+{ prevent interfaces from implementing IUnknown by default: }
+{ cf. https://forum.lazarus.freepascal.org/index.php?topic=30431.0 }
+{$interfaces corba} 
 
 interface
 
 uses
-SysUtils, Classes, Generics.Collections, mprocess;
+SysUtils, Classes, Generics.Collections, uprocess;
 
 type 
    hook = interface
