@@ -10,13 +10,23 @@ interface
 uses
 SysUtils, Classes, Generics.Collections, uprocess;
 
+// handles getting list of processes
+type
+   list	= interface
+      function GetList : TList<process>;
+   end;
+
+// the hooking interface, which contains information on
+// which processes are hooked and methods which hook them.
 type 
    hook = interface
       function Hook (p : process) : Exception;
+      function GetProcess : process;
       function SetSpeed(f : single) : Exception;
       function Unhook : Exception;
    end;
 
+// initialization
 type
    config =  interface
       function IsConfigSet(c : string) : boolean;
@@ -24,10 +34,6 @@ type
       function Init : Exception;
    end;
 
-type
-   list	= interface
-      function GetList : TList<process>;
-   end;
 
 implementation
 
