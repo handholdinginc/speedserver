@@ -16,6 +16,7 @@ procedure jsonResponse(var res: TResponse; data: String; code : integer=200);
 procedure SetProcess(req: TRequest; res: TResponse);
 procedure SetSpeed(req: TRequest; res: TResponse);
 procedure SetDisable(req: TRequest; res: TResponse);
+procedure GetProcessList(req: TRequest; res: TResponse);
 
 implementation
 var
@@ -25,6 +26,11 @@ var
 
 procedure jsonResponse(var res : TResponse; data: String; code : integer =200);
 begin
+   // needed for axios:
+   res.SetCustomHeader('Access-Control-Allow-Origin','*');
+   res.SetCustomHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+   res.SetCustomHeader('Access-Control-Allow-Headers', 'Content-Type');
+   res.SetCustomHeader('Access-Control-Allow-Credentials','true');
    res.Content := data;
    res.Code := code;
    res.ContentType := 'application/json';
@@ -32,6 +38,43 @@ begin
    res.SendContent;
 end;
 
+procedure GetProcessList(req: TRequest; res: TResponse);
+var
+   jObject : TJSONObject;
+   jArray  : TJSONArray;
+   jElem   : TJSONObject;
+   ps	   : TList<process>;
+   p	   : process;
+   e	   : Exception;
+   code	   : integer; // exit code
+begin
+  try
+   jObject := TJSONObject.Create;
+
+   ps:=l.GetList;
+   { if p = nil then }
+   { begin }
+   {    code := 500; // generic error }
+   {    e := Exception.Create('Error retreiving processes.'); }
+   {    jObject.Strings['error'] := e.ToString; }
+   {    jsonResponse(res, jObject.AsJSON, code); }
+   {    Exit; }
+   { end; }
+
+   jArray := TJSONArray.Create;
+   for p in ps do
+   begin
+      jElem := TJSONObject.Create;
+      jElem.Add('Name', p.Name);
+      jElem.Add('ID', p.ID);
+      jArray.Add(jElem);
+   end;
+   jObject.Add('Processes', jArray);
+   jsonResponse(res, jObject.AsJSON);
+  finally
+   jObject.Free;
+  end;
+end;
 
 procedure SetSpeed(req: TRequest; res: TResponse);
 var
@@ -48,8 +91,6 @@ begin
    spd:=StrToFloat(req.RouteParams['speed']);
    jObject.Strings['name'] := name;
    jObject.Add('speed', spd);
-
-
 
    // check we have a process
    p:=h.GetProcess;

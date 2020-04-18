@@ -1,6 +1,9 @@
 *.o
 *ppu
-*pas~
+*~
 *rsj
 *a
 *lfm
+backup/
+lib/
+vendor/
