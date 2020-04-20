@@ -52,21 +52,12 @@ begin
    jObject := TJSONObject.Create;
 
    ps:=l.GetList;
-   { if p = nil then }
-   { begin }
-   {    code := 500; // generic error }
-   {    e := Exception.Create('Error retreiving processes.'); }
-   {    jObject.Strings['error'] := e.ToString; }
-   {    jsonResponse(res, jObject.AsJSON, code); }
-   {    Exit; }
-   { end; }
-
    jArray := TJSONArray.Create;
    for p in ps do
    begin
       jElem := TJSONObject.Create;
-      jElem.Add('Name', p.Name);
-      jElem.Add('ID', p.ID);
+      jElem.Add('name', p.Name);
+      jElem.Add('id', p.ID);
       jArray.Add(jElem);
    end;
    jObject.Add('Processes', jArray);
