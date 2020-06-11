@@ -20,7 +20,7 @@ implementation
       RouterInit(_c,_l,_h);
       HTTPRouter.RegisterRoute('/api/set/:name', @SetProcess);
       HTTPRouter.RegisterRoute('/api/speed/:speed/:name', @SetSpeed);
-      HTTPRouter.RegisterRoute('/api/get', @GetProcessList);
+      HTTPRouter.RegisterRoute('/api/list', @GetProcessList);
       HTTPRouter.RegisterRoute('/api/disable', @SetDisable);      
       Application.Threaded := true;
       Application.Initialize;
