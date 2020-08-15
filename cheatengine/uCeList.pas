@@ -28,9 +28,10 @@ implementation
       result := TList<process>.Create;
       sl := TStringList.Create;
       GetProcessList(sl);
+      
       for s in sl do
       begin
-	 result.Add(logic_CreateProcessFromString(s));
+	 result.Insert(0,logic_CreateProcessFromString(s));
       end;	    
    end;
 
